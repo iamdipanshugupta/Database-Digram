@@ -218,9 +218,7 @@ PARKING_SESSIONS (1) ─────────── (M) PAYMENT
 | Layer | Suggestion |
 |---|---|
 | Database | PostgreSQL (SERIAL, ENUM, DECIMAL support) |
-| ORM | Prisma / Sequelize / SQLAlchemy |
-| Backend | Node.js / FastAPI / Django |
-| Auth | JWT-based (per `USERS` table) |
+
 
 ---
 

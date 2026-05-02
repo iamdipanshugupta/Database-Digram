@@ -1,0 +1,136 @@
+title Instagram Thrift Creator Store DB diagram
+colorMode pastel
+notation crows-foot
+styleMode watercolor
+typeface clean
+
+Customers[icon:azure-my-customers , color:Orange]{
+  customer_id serial pk,
+  name varchar(50) unique not null,
+  email varchar(322) unique not null,
+  phone varchar(15),
+  password varchar(256),
+  address text,
+  created_at timestamp,
+  updated_at timestamp
+}
+Customers.customer_id < Orders.order_id
+Orders[icon:orders,color:Green]{
+  order_id pk,
+  customer_id fk,
+  total_amount decimal(19,4),
+  order_status varchar(20) ENUM['pending','placed','shipping','delivered','processing','cancelled,],
+  created_at timestamp,
+  updated_at timestamp
+}
+ Orders.order_id < Order_Items.order_items_id
+ Orders.order_id - Address_details.id
+
+Order_Items[color:red]{
+  order_items_id pk,
+  order_id fk,
+  product_id fk,
+  product_name varchar(255),
+  price_decimal(19,4),
+  quantity int,
+  created_at timestamp,
+  updated_at timestamp
+}
+Order_Items.order_items_id < Product.id
+Shipping_details[color:blue]{
+  shipping_id serial pk,
+  order_id fk,
+  shipping_status varchar(20),
+  tracking_number varchar(100),
+  expected_delicvery date,
+  created_at timestamp,
+  updated_at timestamp
+}
+Orders.order_id - Shipping_details.shipping_id
+Orders.order_id - Payment_details.payment_id
+Payment_details[color:blue]{
+  payment_id varchar(255) pk,
+  order_id fk,
+  tranaction_id varchar(255) unique not null,
+  amount decimal(19,4)
+  payment_method varchar(50) ENUM['credit-card','debit-card','COD','gift_card','UPI'],
+  staus varchar(20) ENUM['pending','authorized','completed','failed','refunded'],
+  payement_gateway varchar(50) ENUM['stripe','razorpay','paypal']
+  created_at timestamp,
+  updated_at timestamp
+}
+
+Address_details[icon:azure-ip-address-manager , color:blue]{
+  id serial pk,
+  customer_id fk,
+  fullname varchar(100),
+  country uuid(12),
+  state varchar(100)
+  city varchar(100)
+  pincode varchar(20)
+  area varchar(100)
+  landmark varchar(128)
+  phone varchar(20)
+  created_at timestamp
+  updated_at timestamp
+}
+Product[color:Green]{
+  id serial pk,
+  name varchar(255)
+  descreption text,
+  price decimal(19,4)
+  quantity int
+  created_at timestamp
+  updated_at timestamp
+}
+Product.id < Product_Type.id
+Product_Type[color :Yellow]{
+  id serial pk,
+  thriftes varchar(50)
+  handmade varchar(50)
+  created_at timestamp,
+  updated_at timestamp
+}
+
+Product_Type.id - Thrifted_Product_Category.id
+
+Thrifted_Product_Category[color:Red]{
+  id serial pk,
+  size_id fk,
+  color_id fk,
+  name varchar(100)
+  ctaegory uuid(36)
+  stock int
+  condition varchar
+  created_at timestamp
+  updated_at timestamp
+}
+Thrifted_Product_Category.id < Product_Size.size_id
+Thrifted_Product_Category.id < Product_Colors.color_id
+
+Product_Type.id - Handmade_Product_Category.id
+Handmade_Product_Category[color:Red]{
+  id serial pk
+  size_id fk,
+  color_id fk,
+  name varchar(100)
+  ctaegory uuid(36)
+  stock int
+  created_at timestamp
+  updated_at timestamp
+}
+Handmade_Product_Category.id < Product_Size.size_id
+Handmade_Product_Category.id < Product_Colors.color_id
+Product_Size[color:purple]{
+  size_id serial pk,
+  size_label varchar(20) ENUM['XXS','XS','S','M','L','XL','XXL']
+  size_group varchar(50) ENUM['EU Footwear','US Alpha','Inches']
+  created_at timestamp,
+  updated_at timestamp
+}
+Product_Colors[color: Purple] {
+color_id serial pk
+color_name
+created_at timestamp
+  updated_at timestamp
+}
