@@ -1,0 +1,93 @@
+title:Fitness Trainer
+
+Users [color:red]{
+    user_id SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(255) UNIQUE,
+    password VARCHAR(255),
+    role VARCHAR(20),
+    created_at TIMESTAMP
+    updated_at TIMESTAMP
+}
+Trainers[color:green] {
+    trainer_id SERIAL PRIMARY KEY,
+    user_id INT UNIQUE,
+    bio TEXT,
+    experience_years INT,
+
+}
+
+Clients[color:black] {
+    client_id SERIAL PRIMARY KEY,
+    user_id INT UNIQUE,
+    age INT,
+    height DECIMAL,  
+}
+
+Plans [color:yellow]{
+    plan_id SERIAL PRIMARY KEY,
+    trainer_id INT,
+    name VARCHAR(100),
+    price DECIMAL,
+    duration_days INT,
+}
+
+Subscriptions[color:pink] {
+    subscription_id SERIAL PRIMARY KEY,
+    client_id INT,
+    plan_id INT,
+    start_date DATE,
+    end_date DATE,
+    status VARCHAR(20),
+}
+
+Sessions[color:yellow] {
+    session_id SERIAL PRIMARY KEY,
+    trainer_id INT,
+    client_id INT,
+    session_date TIMESTAMP,
+    type VARCHAR(50),
+}
+CheckIns [color:blue] {
+    checkin_id SERIAL PRIMARY KEY,
+    client_id INT,
+    date DATE,
+    weight DECIMAL,
+    notes TEXT,
+}
+
+Progress[color:purple] {
+    progress_id SERIAL PRIMARY KEY,
+    client_id INT,
+    date DATE,
+    waist DECIMAL,
+    chest DECIMAL,
+    biceps DECIMAL,
+}
+
+Payments [color:orange]{
+    payment_id SERIAL PRIMARY KEY,
+    subscription_id INT,
+    amount DECIMAL,
+    payment_date DATE,
+    status VARCHAR(20),
+
+}
+
+
+Users.user_id > Trainers.user_id
+Users.user_id > Clients.user_id
+
+Trainers.trainer_id > Plans.trainer_id
+
+Clients.client_id > Subscriptions.client_id
+Plans.plan_id > Subscriptions.plan_id
+
+Trainers.trainer_id > Sessions.trainer_id
+Clients.client_id > Sessions.client_id
+
+Clients.client_id > CheckIns.client_id
+
+Clients.client_id > Progress.client_id
+
+Subscriptions.subscription_id > Payments.subscription_id
